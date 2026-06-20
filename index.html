@@ -3,18 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧜‍♀️ 시그 검색</title>
+<title>🧜‍♀️ 시그 검색 & 좋아요</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Gaegu', sans-serif;
+    /* 💡 전체 글꼴을 Gowun Dodum으로 수정 완료 */
+    font-family: 'Gowun Dodum', sans-serif;
 }
 
 body {
@@ -28,7 +29,7 @@ body {
     margin: auto;
 }
 
-/* 헤더 */
+/* 상단 헤더 */
 .top-bar {
     height: 80px;
     background: linear-gradient(135deg, #FEE500, #fff08d);
@@ -64,34 +65,31 @@ body {
     color: #7ec4d8;
 }
 
-/* 헤더 라벨 */
+/* 리스트 라벨 */
 .header {
     display: grid;
-    /* 좋아요 칸 확보를 위해 그리드 비율 조정 (단가 | 이름 | 좋아요) */
-    grid-template-columns: 100px 1fr 80px;
+    grid-template-columns: 80px 1fr 100px;
     margin-bottom: 10px;
-    padding: 0 10px;
+    padding: 0 15px;
     color: #0086aa;
     font-size: 18px;
     font-weight: 700;
 }
 .header .text-right {
     text-align: right;
-    padding-right: 10px;
 }
 
-/* 카드 */
+/* 시그 카드 리스트 */
 .list {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    margin-bottom: 140px;
+    padding-bottom: 50px;
 }
 
 .card {
     display: grid;
-    /* 단가 | 이름 | 좋아요 버튼 구조 */
-    grid-template-columns: 100px 1fr 80px;
+    grid-template-columns: 80px 1fr 100px;
     align-items: center;
     background: rgba(255,255,255,.9);
     backdrop-filter: blur(10px);
@@ -100,45 +98,53 @@ body {
     padding: 0 18px;
     box-shadow: 0 8px 20px rgba(0,0,0,.08);
     transition: .25s;
-    cursor: pointer;
 }
 
-.card:hover {
-    transform: translateY(-3px) scale(1.02);
-}
-
-/* 번호 */
+/* 번호(단가) */
 .number {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     background: linear-gradient(135deg, #fee500, #fff4a3);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     color: #5a4a00;
     box-shadow: 0 4px 10px rgba(0,0,0,.1);
 }
 
-/* 이름 */
+/* 시그 이름 */
 .name {
-    font-size: 26px;
+    font-size: 24px; /* 글꼴 특성에 맞춰 크기를 살짝 조정했습니다 */
     font-weight: 700;
     color: #28536b;
 }
 
-/* 리스트 내부 좋아요 카운트 */
-.list-like {
+/* 좋아요 버튼 영역 */
+.like-box {
     text-align: right;
-    padding-right: 10px;
-    font-size: 20px;
-    font-weight: 700;
-    color: #ba9e00;
 }
-.list-like.liked {
-    color: #ff9100;
+
+.like-btn {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #555;
+    transition: 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* 내가 좋아요를 눌렀을 때의 스타일 */
+.like-btn.liked {
+    background: #FFDE4D;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(254,229,0,0.3);
 }
 
 .no-result {
@@ -149,78 +155,16 @@ body {
     font-size: 22px;
 }
 
-/* 장식 */
+/* 배경 장식 버블 */
 .bubble {
     position: fixed;
     border-radius: 50%;
     background: rgba(255,255,255,.4);
     z-index: -1;
 }
-
 .b1 { width: 100px; height: 100px; top: 80px; left: 40px; }
 .b2 { width: 70px; height: 70px; right: 30px; top: 200px; }
 .b3 { width: 120px; height: 120px; bottom: 100px; left: 10%; }
-
-/* 미니 플레이어 */
-.mini-player {
-    position: fixed;
-    left: 50%;
-    bottom: -140px;
-    transform: translateX(-50%);
-    width: 95%;
-    max-width: 650px;
-    background: white;
-    border-radius: 25px 25px 0 0;
-    padding: 20px;
-    box-shadow: 0 -5px 20px rgba(0,0,0,.15);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: .35s;
-    z-index: 9999;
-}
-
-.mini-player.show {
-    bottom: 0;
-}
-
-.player-info {
-    flex: 1;
-}
-
-#nowPlaying {
-    font-weight: 700;
-    color: #5A4A00;
-    font-size: 20px;
-}
-
-.player-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.player-btn {
-    width: 45px;
-    height: 45px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    background: #FEE500;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#volumeSlider {
-    width: 90px;
-    accent-color: #FEE500;
-}
-
-#likeBtn.liked {
-    background: #ffd700;
-}
 </style>
 </head>
 <body>
@@ -243,18 +187,6 @@ body {
     </div>
 
     <div id="list" class="list"></div>
-</div>
-
-<div id="miniPlayer" class="mini-player">
-    <div class="player-info">
-        <div id="nowPlaying">🎵 재생중인 시그 없음</div>
-    </div>
-    <div class="player-controls">
-        <button id="likeBtn" class="player-btn" onclick="toggleLike()">🤍</button>
-        <input type="range" id="volumeSlider" min="0" max="100" value="50">
-        <button class="player-btn" onclick="togglePlay()">⏯️</button>
-    </div>
-    <audio id="audioPlayer"></audio>
 </div>
 
 <script>
@@ -286,8 +218,7 @@ const sigList = [
     { id:128, name:"호텔파티" }, { id:129, name:"패스트카" }, { id:130, name:"매니악" },
     { id:131, name:"너와의지금" }, { id:134, name:"잇츠미" }, { id:135, name:"마그네틱" },
     { id:145, name:"뱅뱅" }, { id:146, name:"배드걸굿걸" }, { id:153, name:"우유" },
-    { id:155, name:"드라군" }, { id:158, name:"계엄령" }, 
-    { id:159, name:"오빠하앙", audio:"music/159.mp3" }, 
+    { id:155, name:"드라군" }, { id:158, name:"계엄령" }, { id:159, name:"오빠하앙" }, 
     { id:160, name:"널그리며" }, { id:162, name:"노바디노즈" }, { id:163, name:"와" },
     { id:164, name:"킥드베" }, { id:165, name:"제로투" }, { id:166, name:"바우치" },
     { id:169, name:"터미널" }
@@ -295,18 +226,9 @@ const sigList = [
 
 const list = document.getElementById("list");
 const search = document.getElementById("search");
-const player = document.getElementById("audioPlayer");
-const miniPlayer = document.getElementById("miniPlayer");
-const nowPlaying = document.getElementById("nowPlaying");
-const volumeSlider = document.getElementById("volumeSlider");
-const likeBtn = document.getElementById("likeBtn");
 
-let currentSong = "";
-player.volume = 0.5;
-
-// 로컬스토리지에서 특정 곡의 좋아요 상태 가져오기 유틸리티 함수
 function getLikeData(songName) {
-    const likes = JSON.parse(localStorage.getItem("likes") || "{}");
+    const likes = JSON.parse(localStorage.getItem("simple_likes") || "{}");
     return likes[songName] || { count: 0, clicked: false };
 }
 
@@ -323,14 +245,16 @@ function render(keyword=""){
     list.innerHTML = filtered.map(item => {
         const likeData = getLikeData(item.name);
         const heartIcon = likeData.clicked ? "💛" : "🤍";
-        const likedClass = likeData.clicked ? "liked" : "";
+        const btnClass = likeData.clicked ? "like-btn liked" : "like-btn";
         
         return `
-            <div class="card" onclick="playMusic('${item.audio ? item.audio : ''}', '${item.name}')">
+            <div class="card">
                 <div class="number">${item.id}</div>
                 <div class="name">${item.name}</div>
-                <div class="list-like ${likedClass}">
-                    ${heartIcon} ${likeData.count}
+                <div class="like-box">
+                    <button class="${btnClass}" onclick="toggleLike('${item.name}')">
+                        ${heartIcon} ${likeData.count}
+                    </button>
                 </div>
             </div>
         `;
@@ -341,70 +265,25 @@ search.addEventListener('input',(e)=>{
     render(e.target.value);
 });
 
-function playMusic(src, title){
-    if(!src || src === 'undefined') {
-        alert(`'${title}' 음원 파일이 아직 준비되지 않았습니다.`);
-        return;
-    }
-
-    currentSong = title;
-    player.src = src;
-    player.play();
-
-    nowPlaying.textContent = "🎵 " + title;
-    miniPlayer.classList.add("show");
-    loadLikeState();
-}
-
-function togglePlay(){
-    if(player.paused){
-        player.play();
-    }else{
-        player.pause();
-    }
-}
-
-volumeSlider.addEventListener("input", function(){
-    player.volume = this.value / 100;
-});
-
-function toggleLike(){
-    if(!currentSong) return;
-    const likes = JSON.parse(localStorage.getItem("likes") || "{}");
+function toggleLike(songName){
+    const likes = JSON.parse(localStorage.getItem("simple_likes") || "{}");
     
-    if(!likes[currentSong]) {
-        likes[currentSong] = { count: 0, clicked: false };
+    if(!likes[songName]) {
+        likes[songName] = { count: 0, clicked: false };
     }
 
-    // 토글 처리 (클릭 해제 시 count -1, 클릭 시 count +1)
-    if(likes[currentSong].clicked) {
-        likes[currentSong].clicked = false;
-        likes[currentSong].count = Math.max(0, likes[currentSong].count - 1);
+    if(likes[songName].clicked) {
+        likes[songName].clicked = false;
+        likes[songName].count = Math.max(0, likes[songName].count - 1);
     } else {
-        likes[currentSong].clicked = true;
-        likes[currentSong].count += 1;
+        likes[songName].clicked = true;
+        likes[songName].count += 1;
     }
 
-    localStorage.setItem("likes", JSON.stringify(likes));
-    
-    loadLikeState(); // 플레이어 하트 업데이트
-    render(search.value); // 리스트 숫자 실시간 업데이트
+    localStorage.setItem("simple_likes", JSON.stringify(likes));
+    render(search.value);
 }
 
-function loadLikeState(){
-    if(!currentSong) return;
-    const likeData = getLikeData(currentSong);
-
-    if(likeData.clicked){
-        likeBtn.innerHTML = "💛";
-        likeBtn.classList.add("liked");
-    }else{
-        likeBtn.innerHTML = "🤍";
-        likeBtn.classList.remove("liked");
-    }
-}
-
-// 최초 실행
 render();
 </script>
 </body>
